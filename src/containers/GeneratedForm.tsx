@@ -93,7 +93,6 @@ function GeneratedForm() {
       <div className='my-5'>
         <div className="headingText" >{ques.questionLabel}</div>
         <FormControl fullWidth>
-          <div className="headingText" >Type of Question</div>
           <Select
             // value={formQuestion.questionType ?? ''}
             label="Select type"
