@@ -64,7 +64,7 @@ function Questions() {
       setSnackMessage('Question title is required');
       setSnackVisible(true);
       return
-    } else if (formQuestion.questionType && options && ['radio', 'checkbox', 'dropdown'].includes(formQuestion.questionType) && options.length < 2) {
+    } else if (formQuestion.questionType && options && ['radio', 'checkbox', 'dropdown'].includes(formQuestion.questionType) && options.length < 1) {
       console.log('&&&&&&&')
       setSnackMessage('Add options & fill option details');
       setSnackVisible(true);
