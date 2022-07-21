@@ -1,10 +1,12 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit"
+import { allFunctions } from "./slices/functionsSlice";
 import { formQuestions } from "./slices/questionSlice";
 
 
 export const store = configureStore({
   reducer: {
     questionSlice: formQuestions,
+    functionSlice: allFunctions,
   }
 })
 

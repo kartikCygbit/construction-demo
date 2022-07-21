@@ -19,3 +19,17 @@ export interface OptionType {
 export interface AllQuestions {
   questions: QuestionType[] | null
 }
+
+export interface QuestionPlusOptions{
+  question : QuestionType,
+  optionsList : OptionType[] | null
+}
+
+
+export interface AllFunctions {
+  showNotify: boolean,
+  notificationMessage: string ,
+}
+
+
+

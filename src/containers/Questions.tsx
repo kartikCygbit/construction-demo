@@ -6,14 +6,7 @@ import {
   TextField,
   Button,
   FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  FormGroup,
-  Snackbar,
   Alert,
-  InputLabel,
   Select,
   MenuItem,
   Tooltip,
@@ -23,15 +16,14 @@ import {
 import { Delete, Add } from '@mui/icons-material';
 
 import { setQuestion } from "../redux/slices/questionSlice";
+import { setNotification, removeNotification } from "../redux/slices/functionsSlice";
+
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, AppState } from "../redux/store";
-import { OptionType, QuestionType } from '../types/interfaces';
+import { OptionType, QuestionPlusOptions, QuestionType } from '../types/interfaces';
 
 function Questions() {
   const dispatch = useDispatch<AppDispatch>();
-  const currentAssessment = useSelector((state: AppState) => state.questionSlice.questions);
-  const [snackVisible, setSnackVisible] = useState<boolean>(false);
-  const [snackMessage, setSnackMessage] = useState<string>('All details are required');
   const defaultFormQuestion = {
     _id: '',
     questionType: null,
@@ -51,36 +43,42 @@ function Questions() {
     optionText: ''
   }
   const [options, setOptions] = useState<OptionType[] | null>([{ ...defaultOptions }]);
-  // ------------------------------------
 
   const addQuestion = () => {
-    dispatch(setQuestion(formQuestion)); 
+    let questionData : QuestionPlusOptions ={
+      question: {...formQuestion},
+      optionsList: options ? [...options] :null
+    }
+    dispatch(setQuestion(questionData));
+    setFormQuestion({...defaultFormQuestion});
+    setOptions([{...defaultOptions}]);
   }
 
   const checkDetails = () => {
     console.log('Checking details...', options)
-    if (!formQuestion.questionLabel || !formQuestion.questionType) {
-      console.log('****')
-      setSnackMessage('Question title is required');
-      setSnackVisible(true);
+    if (!formQuestion.questionType) {
+      dispatch(setNotification('Question Type is required'));
+      return
+    } else if (!formQuestion.questionLabel) {
+      dispatch(setNotification('Question Title is required'));
+      return
+    } else if (formQuestion.questionType && options && ['textfield', 'checkbox'].includes(formQuestion.questionType) && !formQuestion.answerType) {
+      dispatch(setNotification('Select Answer type'));
       return
     } else if (formQuestion.questionType && options && ['radio', 'checkbox', 'dropdown'].includes(formQuestion.questionType) && options.length < 1) {
-      console.log('&&&&&&&')
-      setSnackMessage('Add options & fill option details');
-      setSnackVisible(true);
+      dispatch(setNotification('Add options & fill option details'));
       return
     } else {
+      if (formQuestion && formQuestion.questionLabel) {
+        console.log('OPTIONS------------------>')
+        console.log(options)
+        setFormQuestion({
+          ...formQuestion,
+          _id: `${Math.random() + formQuestion.questionLabel}`,
+        });
+      }
     }
-    // if (options) {
-      console.log('OPTIONS------------------>')
-      console.log(options)
-      setFormQuestion({
-        ...formQuestion,
-        _id: `${Math.random() + formQuestion.questionLabel}` ,
-        options: options ? [...options] : null
-      });
-    // }
-     addQuestion();
+    addQuestion();
   }
 
   const renderOptions = () => {
@@ -99,7 +97,7 @@ function Questions() {
                       optionNumber: `option_${index}`,
                       optionText: e.target.value
                     };
-                    console.log('88888888888888 ===>',opt)
+                    console.log('88888888888888 ===>', opt)
                     setOptions(opt)
                   }
                 }} />
@@ -128,20 +126,6 @@ function Questions() {
 
   return (
     <div className='questionbody'>
-      <Snackbar
-        open={snackVisible}
-        autoHideDuration={6000}
-        onClose={() => {
-          setSnackVisible(false)
-        }}
-        message={snackMessage}
-      >
-        <Alert onClose={() => {
-          setSnackVisible(false)
-        }} severity="error" sx={{ width: '100%' }}>
-          All details are required
-        </Alert>
-      </Snackbar>
       <div className='text-5xl text-center font-bold mb-24'>
         Add Questions
       </div>
