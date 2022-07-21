@@ -45,8 +45,12 @@ function Questions() {
   const [options, setOptions] = useState<OptionType[] | null>([{ ...defaultOptions }]);
 
   const addQuestion = () => {
+    let questionInfo ={
+      ...formQuestion,
+      _id: `${formQuestion.questionType}_${Math.random()}`,
+    }
     let questionData : QuestionPlusOptions ={
-      question: {...formQuestion},
+      question: questionInfo,
       optionsList: options ? [...options] :null
     }
     dispatch(setQuestion(questionData));
@@ -69,14 +73,7 @@ function Questions() {
       dispatch(setNotification('Add options & fill option details'));
       return
     } else {
-      if (formQuestion && formQuestion.questionLabel) {
-        console.log('OPTIONS------------------>')
-        console.log(options)
-        setFormQuestion({
-          ...formQuestion,
-          _id: `${Math.random() + formQuestion.questionLabel}`,
-        });
-      }
+
     }
     addQuestion();
   }
@@ -97,7 +94,6 @@ function Questions() {
                       optionNumber: `option_${index}`,
                       optionText: e.target.value
                     };
-                    console.log('88888888888888 ===>', opt)
                     setOptions(opt)
                   }
                 }} />
@@ -108,9 +104,7 @@ function Questions() {
                     if (options && options.length > 0) {
                       let op = [...options];
                       op.splice(index, 1);
-                      // console.log(op)
                       setOptions(op);
-                      console.log('--------->', op)
                     }
                   }}>
                     <Delete />
@@ -247,36 +241,3 @@ function Questions() {
 }
 
 export default Questions;
-
-
-{/* <AccordionDetails>
-            <Typography>Answer type :</Typography>
-            <FormControl>
-              <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="single"
-                name="radio-buttons-group"
-                value={formTextField.answerType}
-                onChange={(e) => {
-                  console.log('=>', e.target.value)
-                  setFormTextField({
-                    ...formTextField,
-                    answerType: e.target.value
-                  })
-                }}
-              >
-                <FormControlLabel value="textSingleLine" control={<Radio />} label="Single line" />
-                <FormControlLabel value="textMultiline" control={<Radio />} label="Multiline" />
-              </RadioGroup>
-            </FormControl>
-          </AccordionDetails>
-          <AccordionDetails>
-            <Button variant="outlined" onClick={() => {
-              dispatch(setFormQuestion(formTextField));
-              setFormTextField({
-                ...formTextField,
-                label: ''
-              })
-            }}>Add question</Button>
-          </AccordionDetails>
-        </Accordion> */}
