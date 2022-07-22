@@ -15,12 +15,14 @@ export interface QuestionType {
   questionLabel: null | string;
   options? : OptionType[]  | null;
   optionType? : string | null;
+  rangeValues? : number[] | null;
 }
 
 export interface OptionType {
   optionNumber: string;
   optionText: string;
 }
+
 
 export interface CheckBoxType {
   questionId : string;
@@ -36,7 +38,7 @@ export interface QuestionPlusOptions{
 export interface AnswerType{
   questionId: string;
   questionLabel: string | null;
-  answer: string | OptionType[] | null
+  answer: string | OptionType[] | number[] | File | null
 }
 
 export interface AllFunctions {

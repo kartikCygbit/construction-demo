@@ -1,39 +1,45 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import '../containers/styles/Main.css'
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, AppState } from "../redux/store";
-import { CheckBoxType, OptionType, QuestionType } from '../types/interfaces';
-import { clearQuestions, setAnswer } from "../redux/slices/questionSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
 import {
-  Button
+  Button,
+  Divider,
 } from '@mui/material';
+import { setAnswer } from "../redux/slices/questionSlice";
 
 function FormFileUpload(props: any) {
   let { question } = props;
   const dispatch = useDispatch<AppDispatch>();
-  const [file, setFile] = useState<File| null>(null)
+  const [file, setFile] = useState<File | null>(null)
 
-  const handleChange = (file: File | null) => {
-    console.log('file--->',file)
-    setFile(file);
-    // if(newValue){
-    //   setValue(newValue);
-    //   dispatch(setAnswer({
-    //     questionId: question._id,
-    //     questionLabel: question.questionLabel,
-    //     answer: moment(newValue).format('LT') 
-    //   }))
-    // }
+  const handleChange = (e: React.FormEvent<HTMLInputElement> | undefined) => {
+    console.log('file--->', e?.currentTarget.files)
+    if (e?.currentTarget.files) {
+      setFile(e?.currentTarget.files[0]);
+      // dispatch(setAnswer({
+      //   questionId: question._id,
+      //   questionLabel: question.questionLabel,
+      //   answer: e?.currentTarget.files[0]
+      // }))
+    }
   };
 
   return (
-    <div className='my-5'>
-      <div className="headingText" >{question.questionLabel}</div>
-      <Button variant="contained" component="label">
-        Choose file
-        <input hidden accept="image/*" multiple type="file" />
-      </Button>
-    </div>
+    <>
+      <div className='my-5'>
+        <div className="headingText" >{question.questionLabel}</div>
+        <div className='flex flex-row'>
+          <Button variant="contained" component="label">
+            Choose file
+            <input hidden accept="image/*" multiple type="file" onChange={handleChange} />
+          </Button>
+          <div>
+          </div>
+        </div>
+      </div>
+      <Divider />
+    </>
   )
 }
 

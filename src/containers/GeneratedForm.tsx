@@ -20,6 +20,7 @@ import DropDown from '../components/DropDown';
 import FormDatePicker from '../components/FormDatePicker';
 import FormTimePicker from '../components/FormTimePicker';
 import FormFileUpload from '../components/FormFileUpload';
+import FormNumberRange from '../components/FormNumberRange';
 
 
 function GeneratedForm() {
@@ -102,6 +103,8 @@ function GeneratedForm() {
               return <FormTimePicker question={question}  />
             }else if(question.questionType ==='fileImage'){
               return <FormFileUpload question={question}  />
+            }else if(question.questionType ==='numberRange'){
+              return <FormNumberRange question={question} />
             } else {
               return <div>No questions added</div>
             }

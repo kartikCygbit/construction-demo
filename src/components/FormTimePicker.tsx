@@ -5,9 +5,7 @@ import { AppDispatch, AppState } from "../redux/store";
 import { CheckBoxType, OptionType, QuestionType } from '../types/interfaces';
 import { clearQuestions, setAnswer } from "../redux/slices/questionSlice";
 import {
-  FormControl,
-  Select,
-  MenuItem
+  Divider
 } from '@mui/material';
 import moment from 'moment';
 import Stack from '@mui/material/Stack';
@@ -24,33 +22,36 @@ function FormTimePicker(props: any) {
   const [value, setValue] = useState<Date | null>(
     new Date('2014-08-18T21:11:54'),
   );
-  
+
   const handleChange = (newValue: Date | null) => {
     setValue(newValue);
-    if(newValue){
+    if (newValue) {
       setValue(newValue);
       dispatch(setAnswer({
         questionId: question._id,
         questionLabel: question.questionLabel,
-        answer: moment(newValue).format('LT') 
+        answer: moment(newValue).format('LT')
       }))
     }
   };
 
   return (
-    <div className='my-5'>
-      <div className="headingText" >{question.questionLabel}</div>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <Stack spacing={3}>
-          <TimePicker
-            label="Time"
-            value={value}
-            onChange={handleChange}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </Stack>
-      </LocalizationProvider>
-    </div>
+    <>
+      <div className='my-5'>
+        <div className="headingText" >{question.questionLabel}</div>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Stack spacing={3}>
+            <TimePicker
+              label="Time"
+              value={value}
+              onChange={handleChange}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </Stack>
+        </LocalizationProvider>
+      </div>
+      <Divider />
+    </>
   )
 }
 

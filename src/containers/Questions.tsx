@@ -11,7 +11,8 @@ import {
   MenuItem,
   Tooltip,
   IconButton,
-  Checkbox
+  Checkbox,
+  Grid
 } from '@mui/material';
 import { Delete, Add } from '@mui/icons-material';
 
@@ -37,25 +38,34 @@ function Questions() {
     answerType: '',
     questionLabel: '',
     options: null,
+    rangeValues: null
   })
   const defaultOptions = {
     optionNumber: 'option_0',
     optionText: ''
   }
   const [options, setOptions] = useState<OptionType[] | null>([{ ...defaultOptions }]);
+  const [numRange, setNumRange] = useState<number[]>([0, 100])
+
+  useEffect(() => {
+    setFormQuestion({
+      ...formQuestion,
+      rangeValues: [...numRange]
+    })
+  }, [numRange])
 
   const addQuestion = () => {
-    let questionInfo ={
+    let questionInfo = {
       ...formQuestion,
       _id: `${formQuestion.questionType}_${Math.random()}`,
     }
-    let questionData : QuestionPlusOptions ={
+    let questionData: QuestionPlusOptions = {
       question: questionInfo,
-      optionsList: options ? [...options] :null
+      optionsList: options ? [...options] : null
     }
     dispatch(setQuestion(questionData));
-    setFormQuestion({...defaultFormQuestion});
-    setOptions([{...defaultOptions}]);
+    setFormQuestion({ ...defaultFormQuestion });
+    setOptions([{ ...defaultOptions }]);
   }
 
   const checkDetails = () => {
@@ -71,6 +81,9 @@ function Questions() {
       return
     } else if (formQuestion.questionType && options && ['radio', 'checkbox', 'dropdown'].includes(formQuestion.questionType) && options.length < 1) {
       dispatch(setNotification('Add options & fill option details'));
+      return
+    } else if (formQuestion.questionType && ['numberRange'].includes(formQuestion.questionType) && numRange[0] === numRange[1]) {
+      dispatch(setNotification('Minimum and Maximum values should not be equal'));
       return
     } else {
 
@@ -161,7 +174,7 @@ function Questions() {
             })
           }} />
         </div>
-        {formQuestion?.questionType && ['textfield', 'checkbox'].includes(formQuestion.questionType) ?
+        {formQuestion?.questionType && ['textfield', 'checkbox','fileImage'].includes(formQuestion.questionType) ?
           <div className='mb-8'>
             <FormControl fullWidth>
               <div className="headingText" >Answer type</div>
@@ -179,16 +192,21 @@ function Questions() {
                 {
                   formQuestion.questionType === 'textfield' ?
                     [
-                      <MenuItem value={'singleLine'}>Single Line Textfield</MenuItem>,
-                      <MenuItem value={'multiLine'}>Multi Line Textfield</MenuItem>
+                      <MenuItem value={'singleLine'} key={`Menu_singleLine_${Math.random()}`}>Single Line Textfield</MenuItem>,
+                      <MenuItem value={'multiLine'} key={`Menu_multiLine_${Math.random()}`}>Multi Line Textfield</MenuItem>
                     ]
                     :
                     formQuestion.questionType === 'checkbox' ?
                       [
-                        <MenuItem value={'singleSelect'}>Single Select</MenuItem>,
-                        <MenuItem value={'multiSelect'}>Multi Select</MenuItem>
+                        <MenuItem value={'singleSelect'} key={`Menu_singleSelect_${Math.random()}`} >Single Select</MenuItem>,
+                        <MenuItem value={'multiSelect'} key={`Menu_multiSelect_${Math.random()}`} >Multi Select</MenuItem>
                       ]
-                      : null
+                      : formQuestion.questionType === 'fileImage' ?
+                        [
+                          <MenuItem value={'file'} key={`Menu_file_${Math.random()}`}>File</MenuItem>,
+                          <MenuItem value={'image'} key={`Menu_image_${Math.random()}`}>Image</MenuItem>
+                        ]
+                        : null
                 }
               </Select>
             </FormControl>
@@ -227,6 +245,38 @@ function Questions() {
                 </div>
               </>
 
+              : null
+          }
+        </div>
+        <div className='mb-4'>
+          {
+            formQuestion.questionType && ['numberRange'].includes(formQuestion.questionType) ?
+              <Grid container columns={12} spacing={2} direction={'row'}>
+                <Grid item xs={6}>
+                  <div className='mb-4'>
+                    <div className="headingText" >Minimum Value</div>
+                    <TextField id="outlined-basic" value={numRange[0]} label="Enter minimum value" variant="outlined" className='w-full' onChange={(e) => {
+                      let numbers = [...numRange];
+                      numbers[0] = parseInt(e.target.value)
+                      setNumRange(numbers)
+                    }}
+                      type='number'
+                    />
+                  </div>
+                </Grid>
+                <Grid item xs={6}>
+                  <div className='mb-4'>
+                    <div className="headingText" >Maximum Value</div>
+                    <TextField id="outlined-basic" value={numRange[1]} label="Enter maximum value" variant="outlined" className='w-full' onChange={(e) => {
+                      let numbers = [...numRange];
+                      numbers[1] = parseInt(e.target.value)
+                      setNumRange(numbers)
+                    }}
+                      type='number'
+                    />
+                  </div>
+                </Grid>
+              </Grid>
               : null
           }
         </div>

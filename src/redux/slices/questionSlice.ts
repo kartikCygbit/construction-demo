@@ -39,6 +39,7 @@ const questionSlice = createSlice({
     },
     clearQuestions: (state: AllQuestions) => {
       state.questions = null;
+      state.answers = null;
     },
     setAnswer: (state: AllQuestions, action: PayloadAction<AnswerType>) => {
       let allAns = state.answers ? [...state.answers] : [];

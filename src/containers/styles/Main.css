@@ -16,3 +16,10 @@
   font-weight: 500;
   margin-bottom: 12px;
 }
+
+.imageBox{
+  height: 500px;
+  width: 500px;
+  object-fit: contain;
+  background-color: black;
+}
