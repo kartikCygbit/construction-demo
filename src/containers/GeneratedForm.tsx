@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, AppState } from "../redux/store";
 import { CheckBoxType, OptionType, QuestionType } from '../types/interfaces';
 import { clearQuestions, setAnswer } from "../redux/slices/questionSlice";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import {
   TextField,

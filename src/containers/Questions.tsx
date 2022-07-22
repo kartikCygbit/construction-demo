@@ -12,7 +12,8 @@ import {
   Tooltip,
   IconButton,
   Checkbox,
-  Grid
+  Grid,
+  Fab
 } from '@mui/material';
 import { Delete, Add } from '@mui/icons-material';
 
@@ -174,7 +175,7 @@ function Questions() {
             })
           }} />
         </div>
-        {formQuestion?.questionType && ['textfield', 'checkbox','fileImage'].includes(formQuestion.questionType) ?
+        {formQuestion?.questionType && ['textfield', 'checkbox', 'fileImage'].includes(formQuestion.questionType) ?
           <div className='mb-8'>
             <FormControl fullWidth>
               <div className="headingText" >Answer type</div>
@@ -220,9 +221,9 @@ function Questions() {
               <>
                 {renderOptions()}
                 <div className='flex justify-center items-center'>
-                  <div className='bg-blue-400 rounded-2xl'>
+                  <div>
                     <Tooltip title="Add another option">
-                      <IconButton className='bg-red-500' onClick={() => {
+                      <Fab size="small" color="primary" aria-label="add" onClick={() => {
                         if (options && options.length > 0) {
                           let op = [...options];
                           op.push({
@@ -239,7 +240,7 @@ function Questions() {
                         }
                       }}>
                         <Add />
-                      </IconButton>
+                      </Fab>
                     </Tooltip>
                   </div>
                 </div>

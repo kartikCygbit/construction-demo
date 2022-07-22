@@ -23,3 +23,20 @@
   object-fit: contain;
   background-color: black;
 }
+
+.dropzone{
+  background-color: rgba(221, 221, 221,0.6);
+  border-radius: 20px;
+  height: 100px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 60px;
+  border: 2px dashed gray;
+}
+
+.fileAdded{
+  background-color: cornsilk;
+  border: 2px dashed rgb(49, 228, 49);
+}

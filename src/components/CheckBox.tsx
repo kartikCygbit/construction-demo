@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 
 
-function CheckBox(props: any) {
+const  CheckBox = (props: any) : JSX.Element => {
   let { question } = props;
   const dispatch = useDispatch<AppDispatch>();
   const [optionArray, setOptionArray] = useState<OptionType[] | null>(null);

@@ -17,6 +17,7 @@ const questionSlice = createSlice({
   initialState: initialState,
   name: 'formQuestions',
   reducers: {
+
     setQuestion: (
       state: AllQuestions,
       action: PayloadAction<QuestionPlusOptions>
@@ -37,10 +38,16 @@ const questionSlice = createSlice({
       state.questions = allQues;
       console.log('[QUESTION  SUCCESSFULLY ADDED]');
     },
+
     clearQuestions: (state: AllQuestions) => {
       state.questions = null;
       state.answers = null;
     },
+
+    setQuestionList: (state: AllQuestions, action: PayloadAction<QuestionType[]>) => {
+      state.questions = action.payload;
+    },
+
     setAnswer: (state: AllQuestions, action: PayloadAction<AnswerType>) => {
       let allAns = state.answers ? [...state.answers] : [];
       if (Array.isArray(state.answers) && state.answers.length > 0) {
@@ -58,4 +65,4 @@ const questionSlice = createSlice({
 });
 
 export const formQuestions = questionSlice.reducer;
-export const { setQuestion, clearQuestions, setAnswer } = questionSlice.actions;
+export const { setQuestion,setQuestionList, clearQuestions, setAnswer } = questionSlice.actions;
